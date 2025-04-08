@@ -81,6 +81,8 @@ Project environment configuration with flakes
 ** (NixOS) Versioning and rollbacks
 ** Versioning and rollbacks
 
+** (NixOS) Versioning and rollbacks
+
 * Benefits for Users
 ** It is the largest package repository                                   
 #+ATTR_LATEX: :width 0.9\linewidth
@@ -113,6 +115,19 @@ Source: [[https://web.archive.org/web/20250401055818/https://repology.org/][repo
 ** Ability to track and revert software versions
 ** Managing devices
 ** Managing projects
+** Actually reproducible environments
+- ?
+** Easy management of complex software dependencies
+- examples of overrides
+
+** Consistent environments across different machines
+- demo with multiple machines and flakes
+
+** Streamlined workflow management
+- flake apps, pkgs, shells
+
+** Ability to track and revert software versions
+- nixpkgs, or pkgs infrastructure in general
 
 * *Practical Examples and Use Cases*
 - packaging cellprofiler
