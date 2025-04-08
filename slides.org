@@ -15,16 +15,67 @@ Nix is a tool to build packages in a reproducible and deterministic way, it can 
 #+ATTR_LATEX: :width 0.2\linewidth
 [[./img/nix_logo.svg]]
 ** Why is it relevant to scientific workflows?
+
 * Challenges for scientific software
 ** Reproducibility issues
+> I am unable to re-run your analysis to verify the reported results.
+> - reviewer 2
+
+Most package managers and workflow tools are not theoretically sound to provide reproducibility guarantees.
+
+# Package management with APT on Ubuntu
+
+# Install the "latest" version of git system wide
+apt install git
+
+# Install cellprofiler with pip
+pip install cellprofiler
+
+- Packages are installed system wide
+- Version specification is only possible for the top level of the dependency tree
+- Building packages from source is usually not supported or not encouraged
+
 ** Dependency conflicts
+
+# Install pytorch with cuda 11
+apt install cuda-toolkit-11-8
+
+# Install pytorch with cuda 12
+apt install cuda-toolkit-12-8
+
+- CUDA is installed system wide
+- Cannot install two versions of cuda at the same time without manual symlink and env vars management
+
 ** Difficulty in sharing environments
+System wide dependencies cannot be easily shared without containerization.
+
 ** Managing multiple projects with different requirements
+On most operating systems, packages are installed system wide and are not isolated.
+This makes it very challenging to work with projects requiring older or newer version of dependencies without breaking the rest of the system.
 
 * *How Nix Addresses These Challenges*
 ** Package management with Nix
+
+# Creates a temporary shell with git installed
+nix shell nixpkgs#git
+
+# Runs cellprofiler without installing it on the system
+nix run github:Cellprofiler/Cellprofiler#cellprofiler
+
+- Packages are always isolated and cannot be accessed outside the temporary shell
+- Version specification is possible of the entire dependency tree
+- Packages can be built from source and have first class support
+
 ** Reproducible builds
+
+Explain derivaions? Or can add a joke about monads.
+
 ** Declarative configurations
+
+OS configuration with NixOS
+OS user level configuration with home manager
+Project environment configuration with flakes
+
 ** Isolated environments
 ** Versioning and rollbacks
 
@@ -64,8 +115,15 @@ Source: [[https://web.archive.org/web/20250401055818/https://repology.org/][repo
 - nixpkgs, or pkgs infrastructure in general
 
 * *Practical Examples and Use Cases*
+- packaging cellprofiler
+- working with different cuda version? (caveat: cuda compatibility matrix)
+
 ** Setting up a specific analysis environment
+- flake templates?
+
 ** Sharing a computational pipeline
+- flake based project - monorepo?
+
 ** Replicating results from a published paper
 ** Managing different versions of analysis tools
 * Demos
