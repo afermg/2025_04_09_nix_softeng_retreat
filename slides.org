@@ -1,36 +1,33 @@
 #+TITLE: Nix for Science
 * *Introduction*
-- What is Nix?
-- Why is it relevant to scientific workflows?
-- Briefly introduce the challenges in current scientific software
-  management.
+** What is Nix?
+** Why is it relevant to scientific workflows?
+** Briefly introduce the challenges in current scientific software management.
 
-* *Challenges in Scientific Software Management*
-- Reproducibility issues
-- Dependency conflicts
-- Difficulty in sharing environments
-- Version control of software
-- Managing multiple projects with different requirements
-- Software versions with conflicting dependencies
+* Challenges for scientific software
+** Reproducibility issues
+** Dependency conflicts
+** Difficulty in sharing environments
+** Managing multiple projects with different requirements
 
 * *How Nix Addresses These Challenges*
-- Package management with Nix
-- Reproducible builds
-- Declarative configurations
-- Isolated environments
-- Versioning and rollbacks
+** Package management with Nix
+** Reproducible builds
+** Declarative configurations
+** Isolated environments
+** Versioning and rollbacks
 
-* *Benefits for Scientists*
-- Enhanced reproducibility of research
-- Simplified environment sharing with collaborators
-- Easy management of complex software dependencies
-- Consistent environments across different machines
-- Streamlined workflow management
-- Ability to track and revert software versions
-- Most packages are available
+* *Benefits for Users
+** Enhanced reproducibility of research
+** Simplified environment sharing with collaborators
+** Easy management of complex software dependencies
+** Consistent environments across different machines
+** Streamlined workflow management
+** Ability to track and revert software versions
+** Most packages are available
 
 * *Practical Examples and Use Cases*
-- Setting up a specific analysis environment
-- Sharing a computational pipeline
-- Replicating results from a published paper
-- Managing different versions of analysis tools
+** Setting up a specific analysis environment
+** Sharing a computational pipeline
+** Replicating results from a published paper
+** Managing different versions of analysis tools
