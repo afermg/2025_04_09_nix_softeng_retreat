@@ -1,9 +1,17 @@
 #+TITLE: Nix for Science
+#+OPTIONS: ^:nil H:2 num:t toc:1
+#+DATE: 2025/04/03
+#+Author: Alán F. Muñoz, Ankur Kumar
+#+LaTeX_CLASS: beamer
+#+BEAMER_THEME: metropolis
+#+BEAMER_FRAME_LEVEL: 3
+#+LATEX_HEADER: \usepackage{svg}
 * *Introduction*
 ** What is Nix?
+Nix is a tool to build packages in a reproducible and deterministic way, it can be used as a package manager or as an operative system (NixOS).
+#+ATTR_LATEX: :width 0.5\linewidth
+[[./img/nix_logo.svg]]
 ** Why is it relevant to scientific workflows?
-** Briefly introduce the challenges in current scientific software management.
-
 * Challenges for scientific software
 ** Reproducibility issues
 ** Dependency conflicts
@@ -15,17 +23,16 @@
 ** Reproducible builds
 ** Declarative configurations
 ** Isolated environments
-** Versioning and rollbacks
+** (NixOS) Versioning and rollbacks
 
-* *Benefits for Users
-** Enhanced reproducibility of research
-** Simplified environment sharing with collaborators
+* Benefits for Users
+** Largest package repository
+[[./img/top_repos.png]]
+** Actually reproducible environments
 ** Easy management of complex software dependencies
 ** Consistent environments across different machines
 ** Streamlined workflow management
 ** Ability to track and revert software versions
-** Most packages are available
-
 * *Practical Examples and Use Cases*
 ** Setting up a specific analysis environment
 ** Sharing a computational pipeline
