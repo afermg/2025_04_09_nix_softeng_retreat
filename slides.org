@@ -29,9 +29,18 @@ Nix is a tool to build packages in a reproducible and deterministic way, it can 
 ** Versioning and rollbacks
 
 * Benefits for Users
-** Largest package repository
-#+ATTR_LATEX: :width 0.5\linewidth
+** It is the largest package repository                                   
+#+ATTR_LATEX: :width 0.9\linewidth
+[[./img/npackages_plot.png]]
+** > 100k packages as of April 2025
+:PROPERTIES:
+:BEAMER_env: block
+:BEAMER_col: 0.35
+:END:
+#+ATTR_LATEX: :width 0.6\linewidth
 [[./img/top_repos.png]]
+Source: [[https://web.archive.org/web/20250401055818/https://repology.org/][repology.org]]
+
 ** Really reproducible environments
 ** Easy management of complex software dependencies
 ** Consistent environments across different machines and architectures
