@@ -5,11 +5,14 @@
 #+LaTeX_CLASS: beamer
 #+BEAMER_THEME: metropolis
 #+BEAMER_FRAME_LEVEL: 3
+#+PROPERTY: header-args:mermaid:eval yes :exports output
+
 #+LATEX_HEADER: \usepackage{svg}
+
 * *Introduction*
 ** What is Nix?
 Nix is a tool to build packages in a reproducible and deterministic way, it can be used as a package manager or as an operative system (NixOS).
-#+ATTR_LATEX: :width 0.5\linewidth
+#+ATTR_LATEX: :width 0.2\linewidth
 [[./img/nix_logo.svg]]
 ** Why is it relevant to scientific workflows?
 
@@ -76,9 +79,11 @@ Project environment configuration with flakes
 ** Isolated environments
 
 ** (NixOS) Versioning and rollbacks
+** Versioning and rollbacks
 
 * Benefits for Users
 ** Largest package repository
+#+ATTR_LATEX: :width 0.5\linewidth
 [[./img/top_repos.png]]
 ** Actually reproducible environments
 - ?
@@ -93,6 +98,12 @@ Project environment configuration with flakes
 
 ** Ability to track and revert software versions
 - nixpkgs, or pkgs infrastructure in general
+** Really reproducible environments
+** Easy management of complex software dependencies
+** Consistent environments across different machines and architectures
+** Ability to track and revert software versions
+** Managing devices
+** Managing projects
 
 * *Practical Examples and Use Cases*
 - packaging cellprofiler
@@ -106,3 +117,69 @@ Project environment configuration with flakes
 
 ** Replicating results from a published paper
 ** Managing different versions of analysis tools
+* Demos
+** Conflicting dependencies
+
+In Nix Package A and B can be independent from each other!
+*** Normal systems:
+:PROPERTIES:
+:BEAMER_ENV: block
+:BEAMER_col: 0.35
+:END:
+#+begin_src mermaid :file img/conflict.png :theme forest :exports results :scale 3
+graph LR;  
+  Y2[(Y v0.5)] -- OK --> A[(A)]
+  Y1[(Y v0.4)] -- OK --> B[(B)]
+  Y1 -- OR --> Y2  
+  Y2 -. Error .-> B[(B)]
+  Y1 -. Error .-> A
+#+end_src
+
+#+RESULTS:
+[[file:img/conflict.png]]
+
+*** Nix:
+:PROPERTIES:
+:BEAMER_ENV: block
+:BEAMER_col: 0.35
+:END:
+
+#+begin_src mermaid :file img/nix_independent.png :theme forest :exports results :scale 3
+graph LR;  
+  S[(/nix/store)]  --> Y1
+  S --> Y2  
+  Y1[(Y v0.5)] --> A[(A)]
+  Y2[(Y v0.4)] --> B[(B)]
+#+end_src
+
+#+RESULTS:
+[[file:img/nix_independent.png]]
+
+** Run any random package in a disposable environment
+#+begin_src shell :eval no
+  nix shell gighub:nixos/nixpkgs/HASH#PACKAGE_NAME
+#+end_src
+
+** Reproduce your development environment in multiple computers
+
+#+begin_src shell :eval no 
+  nix develop . 
+#+end_src
+
+Also reproduce your entire home environment in other computers, across Linux, Windows, MacOS and Android*
+Trivialises changing environments.
+
+** Generate entire pipelines with multiple languages and frameworks
+This is useful for updating figures and re-run entire multi-language pipelines becomes a non-issue.
+
+#+begin_src shell :eval no
+  wget https://remote_data.com/files_of_interest.txt
+  
+  awk -f preprocessing_script.awk files_of_interest.txt > preprocessed_data
+
+  R_with_packages script.R preprocessed_data > new_data
+  for pyscript in python_scripts*.py; do
+      python_with_packages $pyscript new_data
+   done
+#+end_src
+
