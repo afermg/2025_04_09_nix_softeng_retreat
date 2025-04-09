@@ -1,62 +1,33 @@
-#+startup: beamer
-#+Title: Nix for science and fun
-#+AUTHOR: Alán F. Muñoz and Ankur Kumar
-#+BEAMER_HEADER: \institute{Imaging Platform, Broad Institute of Harvard and MIT}
-#+OPTIONS: toc:nil num:nil date:nil tex:t title:nil author:t email:nil ^:nil
-#+LATEX_CLASS: beamerposter
-#+BEAMER_THEME: gemini
-#+BEAMER_COLOR_THEME: gemini
+#+TITLE: Nix for Science and fun
+#+OPTIONS: ^:nil H:2 num:t toc:1
+#+DATE: 2025/04/09
+#+Author: Alán F. Muñoz, Ankur Kumar
+#+LaTeX_CLASS: beamer
+#+BEAMER_THEME: metropolis
+#+BEAMER_FRAME_LEVEL: 3
+#+PROPERTY: header-args:mermaid:eval yes :exports output
+
 #+LATEX_HEADER: \usepackage{svg}
 #+latex_header: \usepackage{xcolor}
 #+LATEX_HEADER: \usepackage{minted}
-# #+bibliography: ../local-bib.bib
-# #+cite_export: csl
 
-* Footer (Optional)                                                  :ignore:
-# #+BEAMER_HEADER: \footercontent{
-# #+BEAMER_HEADER:  \href{https://github.com/afermg/2024\_10\_i2k\_poster\_flashtalk/blob/main/poster.pdf}{github.com/afermg/2024\_10\_i2k\_poster\_flashtalk/blob/main/poster.pdf} \hfill
-# #+BEAMER_HEADER:  I2K 2024, Milan, Italy \hfill
-# #+BEAMER_HEADER:  \href{mailto:amunozgo@broadinstitute.org}{amunozgo@broadinstitute.org}}
-# # (can be left out to remove footer)
 
-* Logo (Optional)                                                    :ignore:
-# use this to include logos on the left and/or right side of the header:
-
-# #+BEAMER_HEADER: \logoleft{\includegraphics[height=12cm]{../figs/qr_hub.png}}
-#+BEAMER_HEADER: \logoright{\includegraphics[height=3cm]{../logos/broad_logo.png}}
-
-# # # ====================
-# # # Body
-# # # ====================
-
-* @@latex:@@ :B_fullframe:
-:PROPERTIES:
-:BEAMER_ENV: fullframe
-:END:
-
-** @@latex:@@ :BMCOL:
-:PROPERTIES:
-:BEAMER_col: 0.33
-:END:
-*** Abstract
-One of the biggest challenges for the biological sciences is the replication crisis we face. In addition to inherent biological noise and ever-growing datasets, limited focus on reproducibility of computational processes and their associated results hinders novel discoveries. Improving the reliability and efficiency of scientific research will increase the credibility of current and future scientific literature and accelerate discovery. While there have been improvements in recent years, current technologies fall short of principally solving the problem of software reproducibility. Nix is a framework for software deployment that warrants correct resolution of dependency trees to provide fully reproducible and deterministic packages and environments.
-
-*** What is Nix?
-\vspace*{1cm}
-#+begin_example
+* Introduction
+** What is Nix?
 I am unable to re-run your analysis to verify the reported results.
 
 - Reviewer 2
-#+end_example
 
+** What is Nix?
+  
 #+ATTR_LATEX: :width 0.6\linewidth
 [[../figs/nix_trinity.png]]
 
-*** Problem: Dependency resolution\hfill Solution:
-\vspace*{1cm}
+** Dependency resolution
+
 Most package managers and workflow tools are not theoretically sound to provide reproducibility guarantees.
 
-**** Problem:                                                      :BMCOL:
+** Dependency resolution: Problem                                    :BMCOL:
 :PROPERTIES:
 :BEAMER_col: 0.5
 :END:
@@ -75,7 +46,7 @@ pip install cellprofiler
 - Version specification is only possible for the top level of the dependency tree
 - Building packages from source is usually not supported or not encouraged
   
-**** Solution:                                                     :BMCOL:
+** Dependency resolution: Solution                                   :BMCOL:
 :PROPERTIES:
 :BEAMER_col: 0.5
 :END:
@@ -91,8 +62,7 @@ pip install cellprofiler
 - Packages are always isolated and cannot be accessed outside the temporary shell
 - Version specification is possible of the entire dependency tree
 - Packages can be built from source and have first class support
-*** Problem: Dependency conflicts\hfill Solution:
-**** Problem:                                                      :BMCOL:
+** Dependency conflicts: Problem                                     :BMCOL:
 :PROPERTIES:
 :BEAMER_col: 0.5
 :END:
@@ -108,7 +78,7 @@ apt install cuda-toolkit-12-8
 - CUDA is installed system wide
 - Cannot install two versions of cuda at the same time without manual symlink and env vars management
 
-**** Solution:                                                     :BMCOL:
+** Depedency conflicts: Solution                                     :BMCOL:
 :PROPERTIES:
 :BEAMER_col: 0.5
 :END:
@@ -123,8 +93,7 @@ apt install cuda-toolkit-12-8
 
 - Cuda is not installed system-wide
 - Multiple cuda versions can coexist without further environment management
-*** Problem: Environment replication\hfill Solution:
-**** Problem:                                                      :BMCOL:
+** Environment replication: Problem                                  :BMCOL:
 :PROPERTIES:
 :BEAMER_col: 0.5
 :END:
@@ -134,9 +103,9 @@ apt install cuda-toolkit-12-8
 
 System wide dependencies cannot be easily shared without containerization.
 - Conda can manage some system libraries, but not all
-\vspace*{100cm}
+
   
-**** Solution:                                                     :BMCOL:
+** Enviroment replication: Solution                                  :BMCOL:
 :PROPERTIES:
 :BEAMER_col: 0.5
 :END:
@@ -144,16 +113,12 @@ System wide dependencies cannot be easily shared without containerization.
   nixos-shell --flake github:leoank/neusis#oppy
 #+end_src
 
-\vspace*{100cm}
+
   
-** @@latex:@@ :BMCOL:
-:PROPERTIES:
-:BEAMER_col: 0.3
-:END:
-*** Problem: Projects with different requirements\hfill Solution:
+** Projects with different requirements
 On most operating systems, packages are installed system wide and are not isolated.
 This makes it very challenging to work with projects requiring older or newer version of dependencies without breaking the rest of the system.
-***** Normal systems:
+**** Normal systems:
 :PROPERTIES:
 :BEAMER_ENV: block
 :BEAMER_col: 0.35
@@ -162,12 +127,15 @@ This makes it very challenging to work with projects requiring older or newer ve
 graph LR;  
   Y2[(Y v1)] -- OK --> A[(A)]
   Y1[(Y v2)] -- OK --> B[(B)]
-  Y1 -- OR --> Y2  
+  Y1 <-- OR --> Y2  
   Y2 -. Error .-> B[(B)]
   Y1 -. Error .-> A
 #+end_src
 
-***** Nix:
+#+RESULTS:
+[[file:../figs/conflict.png]]
+
+**** Nix:
 :PROPERTIES:
 :BEAMER_ENV: block
 :BEAMER_col: 0.35
@@ -181,12 +149,12 @@ graph LR;
   Y2[(Y v2)] --> B[(B)]
 #+end_src
 
-*** Benefits
-**** 100k+ packages as of April 2025
+* Benefits
+** 100k+ packages as of April 2025
 [[./../figs/npackages_plot.png]]
 # [[../figs/top_repos.png]]
 
-**** Consistent environments across different machines and architectures
+** Consistent environments across different machines and architectures
 #+begin_src mermaid :file ../figs/multiple_machines.png :exports results :scale 3 :theme neutral
 graph TD;
   C[Config]  --> N1[(NixOS Server 1)]
@@ -195,7 +163,10 @@ graph TD;
   C --> L[(Linux + Nix)]
 #+end_src
 
-**** Reliably package and deploy software
+** Reliably package and deploy software
+:PROPERTIES:
+:BEAMER_opt: shrink=35
+:END:
  #+begin_src nix :exports code :eval no
    # file.nix
       {inputs}:
@@ -212,12 +183,11 @@ graph TD;
    # -> /nix/store/is2vyv9sxn4w9rrgqxg9qhlcf3slfv34-emacs-30.1
  #+end_src
  
-\vspace*{100cm}
-** @@latex:@@ :BMCOL:
+
+** Generate entire pipelines with multiple languages and frameworks
 :PROPERTIES:
-:BEAMER_col: 0.3
+:BEAMER_opt: shrink=35
 :END:
-*** Generate entire pipelines with multiple languages and frameworks
 This is useful for updating figures and re-run entire multi-language pipelines becomes a non-issue.
 
 #+begin_src shell :eval no
@@ -236,17 +206,18 @@ This is useful for updating figures and re-run entire multi-language pipelines b
   done
 #+end_src
 
-*** Demos
+* Resources
+** Demos
 #+ATTR_LATEX: :width 0.7\linewidth
 [[./../figs/nix_meme.png]]
 
-**** Run any package in a disposable environment
+*** Run any package in a disposable environment
 #+begin_src bash :eval no
   nix run nixpkgs#inkscape
   nix run github:Cellprofiler/Cellprofiler#cellprofiler
   export NIXPKGS_ALLOW_UNFREE=1 && nix run nixpkgs#vscode --impure
 #+end_src
-**** Ask us for a demonstration!
+** Ask us for a demonstration!
 :PROPERTIES:
 :BEAMER_env: exampleblock
 :END:
@@ -261,8 +232,7 @@ This is useful for updating figures and re-run entire multi-language pipelines b
 
 
 Also reproduce your entire home environment in other computers, across Linux, Windows, MacOS and Android*
-*** Additional resources and links
+** Additional resources and links
 #+ATTR_LATEX: :width 0.4\linewidth
 [[./../figs/qrcode.png]]
 
-\vspace*{100cm}
