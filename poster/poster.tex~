@@ -1,0 +1,93 @@
+% Created 2025-04-08 Tue 17:50
+% Intended LaTeX compiler: xelatex
+\documentclass[final]{beamer}
+          \usepackage[T1]{fontenc}
+          \usepackage{lmodern}
+          \usepackage[size=custom,width=84.1,height=118.9,scale=1.0]{beamerposter}  
+          \usepackage{graphicx}
+          \usepackage{booktabs}
+          \usepackage{tikz}
+          \usepackage{pgfplots}
+          \pgfplotsset{compat=1.18}
+          \usepackage{anyfontsize}
+
+
+\usepackage{svg}
+\usetheme{gemini}
+\usecolortheme{gemini}
+\author{Alán F. Muñoz and Ankur Kumar}
+\date{}
+\title{Nix for science and fun}
+\institute{Broad Institute of Harvard and MIT}
+\hypersetup{
+ pdfauthor={Alán F. Muñoz and Ankur Kumar},
+ pdftitle={},
+ pdfkeywords={},
+ pdfsubject={},
+ pdfcreator={},
+ pdflang={English}}
+\begin{document}
+
+\begin{frame}[label={sec:orgc1e8bd0}]{}
+\begin{columns}
+\begin{column}{0.3\columnwidth}
+\begin{block}{Abstract}
+\vspace*{2cm}
+\end{block}
+\begin{block}{Goals}
+\end{block}
+
+\begin{block}{We use data from the Cell Painting assay, in which cellular components are stained using six dyes and imaged in five channels}
+\vspace*{2cm}
+\end{block}
+\begin{block}{Morphological profiles were generated at a high-throughput scale}
+\vspace*{2cm}
+\end{block}
+\end{column}
+\begin{column}{0.3\columnwidth}
+\begin{block}{We generated a reference dataset for cells and features that indicates clustered groups of genes}
+\end{block}
+
+\begin{block}{The JUMP consortium produced a massive set of morphological profiles}
+\end{block}
+\begin{block}{We pre-calculated correlations between perturbations}
+\end{block}
+
+
+
+\begin{block}{Which other perturbations produce a phenotype similar to my gene of interest?}
+\end{block}
+\end{column}
+\begin{column}{0.3\columnwidth}
+\begin{block}{Which features are the most significant for my gene of interest?}
+\end{block}
+
+\begin{block}{A standard analysis workflow has the following steps:}
+\begin{enumerate}
+\item Find the most correlated and anticorrelated genes.
+\item Find the features that show highest variance between these correlated/anticorrelated candidates.
+\item Use these feature to guide comparisons between perturbed cells and negative controls.
+\item Fetch images for these perturbations for inspection
+\item Retrieve additional annotations from existing databases.
+\end{enumerate}
+\end{block}
+\begin{block}{We provide libraries for data scientists and developers}
+We compare images using tools that decompose the channels to focus on the most important features obtained from data mining
+
+Examples of these tools and other workflows are available on the JUMP Hub.
+\end{block}
+\begin{block}{Available resources}
+\end{block}
+
+\begin{alertblock}{Conclusions}
+All data and tools for programatic and manual access to the data are made available so people can explore and train models (Chandrasekaran, Srinivas Niranj and Ceulemans, Hugo and Boyd, Justin D. and Carpenter, Anne E., 2021). Refer to \href{http://broad.io/jump}{broad.io/jump} for more information.
+
+\heading{The JUMP Cell Painting can serve as a resource to obtain candidate genes to find further insight on genes or proteins of interest.}
+\heading{Our querying systems can help both biologists and data scientists to accelerate their biological discoveries by providing means to interpret features and listing genes with similar phenotypes}
+\end{alertblock}
+\begin{block}{References}
+\end{block}
+\end{column}
+\end{columns}
+\end{frame}
+\end{document}

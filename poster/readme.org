@@ -1,0 +1,178 @@
+#+TITLE: Reproducible poster generation
+#+AUTHOR: Alán F. Muñoz
+
+* Quick Instructions
+Provided you have nix this should be all you need.
+#+begin_src shell
+nix-shell --run make
+#+end_src
+
+#+RESULTS:
+
+* Introduction
+
+A repository for reproducible poster generation. It uses nix for dependency management and to be self-contained.
+
+* Project publish function
+
+This section is used to publish the documentation to =html= and =pdf= in the
+=pub/= directory.
+
+This code defines the =publish-pdf= command, used to generate the published poster.
+
+** LaTeX style
+
+*** =org= preamble
+:PROPERTIES:
+:HEADER-ARGS: :tangle org-preamble.sty
+:END:
+
+This section defines =org= preamble and settings for documents exported from
+=.org= to =.tex= files. The basic use is to add =\usepackage{org-preamble}= in
+your LaTeX document.
+
+**** Packages requirements
+***** Style
+
+****** AMS packages
+#+BEGIN_SRC latex
+  %% \RequirePackage{amsmath,amssymb}
+#+END_SRC
+
+****** hyperref package
+#+BEGIN_SRC latex
+  \RequirePackage{hyperref}
+#+END_SRC
+
+****** hyperref package
+#+BEGIN_SRC latex
+\definecolor{links}{HTML}{2A1B81}
+\hypersetup{colorlinks,linkcolor=,urlcolor=links, citecolor=black}
+#+END_SRC
+
+****** Lengths
+#+BEGIN_SRC latex
+% ====================
+% Lengths
+% ====================
+
+% If you have N columns, choose \sepwidth and \colwidth such that
+% (N+1)*\sepwidth + N*\colwidth = \paperwidth
+\newlength{\sepwidth}
+\newlength{\colwidth}
+\setlength{\sepwidth}{0.025\paperwidth}
+\setlength{\colwidth}{0.3\paperwidth}
+#+END_SRC
+
+
+*** =org= to LaTeX stuff
+**** Use smart quote when exporting
+#+BEGIN_SRC emacs-lisp
+  (setq org-export-with-smart-quotes t)
+#+END_SRC
+
+#+RESULTS:
+: t
+
+**** Keep LaTeX logfiles
+#+BEGIN_SRC emacs-lisp
+  (setq org-latex-remove-logfiles nil)
+#+END_SRC
+
+#+RESULTS:
+
+**** Default list of LaTeX packages
+Only include one default package and remove all the crapppy stuff included by
+=org= \rightarrow =latex= translation.
+
+#+BEGIN_SRC emacs-lisp
+  (add-to-list 'org-latex-packages-alist '("" "org-preamble"))
+#+END_SRC
+
+#+RESULTS:
+|   | org-preamble |
+
+**** =org= LaTeX class
+Adjust poster size here
+#+BEGIN_SRC emacs-lisp
+  (unless (boundp 'org-latex-classes)
+    (setq org-latex-classes nil))
+
+   (add-to-list 'org-latex-classes
+         '("beamerposter"
+           "\\documentclass[final]{beamer}
+           \\usepackage[T1]{fontenc}
+           \\usepackage{lmodern}
+           \\usepackage[size=custom,width=120,height=91,scale=1.0]{beamerposter}  
+           \\usepackage{graphicx}
+           \\usepackage{booktabs}
+           \\usepackage{tikz}
+           \\usepackage{pgfplots}
+           \\pgfplotsset{compat=1.18}
+           \\usepackage{anyfontsize}
+  
+           [NO-DEFAULT-PACKAGES]"))
+#+END_SRC
+
+
+**** Set LaTeX command
+#+BEGIN_SRC emacs-lisp
+  (setq org-latex-pdf-process '("latexmk -xelatex -shell-escape -quiet %f"))
+#+END_SRC
+
+#+RESULTS:
+| latexmk -xelatex -shell-escape -quiet %f |
+
+**** ox-extra
+Enables :ignore: tags for optional headlines, or headlines used as comments.
+#+begin_src elisp
+  (require 'package)
+  (package-initialize)
+  (add-to-list 'package-archives '("org-plus-contrib" . "https://orgmode.org/elpa/") t)
+  (require 'ox-extra)
+  (ox-extras-activate '(ignore-headlines))
+  (setq org-latex-listings 'minted) 
+#+end_src
+
+
+*** Project definition
+#+BEGIN_SRC emacs-lisp
+   (message "Load path is %s" load-path)
+   (require 'citeproc)
+  (message "Load path now is %s" load-path)
+
+
+     (setq this-directory (file-name-directory (or load-file-name buffer-file-name)))
+     (setq pub-directory (concat this-directory "pub/"))
+     (unless (boundp 'org-publish-project-alist)
+       (setq org-publish-project-alist nil))
+
+
+     (add-to-list
+      'org-publish-project-alist
+      `("publish-pdf"
+        :base-directory ,this-directory
+        :base-extension "org"
+        :publishing-directory ,pub-directory
+        :publishing-function org-beamer-publish-to-pdf
+        :exclude ".*publish.*.org\\|readme.org\\|qr.org\\|abstract.org"
+        ;; :section-numbers 2
+        :with-toc        nil
+        :latex-class "beamerposter"
+        ;; :latex-header-extra ""
+        ))
+     
+   (add-to-list 'load-path "~/.emacs.d/elpa")
+   (package-initialize)
+   (package-install 'citeproc)
+#+END_SRC
+
+* Exporter functions
+#+BEGIN_SRC emacs-lisp
+  (defun org-publish-pdf ()
+    (progn
+      (org-publish-project "publish-pdf" 'force)
+      (shell-command "mv ./latex.d pub/.; mv -f poster* *.sty ./pub/latex.d/.; mv ./pub/latex.d/poster*.org .")
+      ))
+#+END_SRC
+
